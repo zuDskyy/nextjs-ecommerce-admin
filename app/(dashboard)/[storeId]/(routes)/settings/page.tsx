@@ -1,5 +1,5 @@
 import prismadb from "@/lib/prismadb";
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { SettingsForm } from "./components/setting-form";
 interface SettingPageProps{
@@ -11,8 +11,9 @@ interface SettingPageProps{
 
 
 
-const SettingsPage:React.FC<SettingPageProps> = async({params}) => {
-    const {userId} = auth();
+const SettingsPage:React.FC<SettingPageProps> = async props => {
+    const params = await props.params;
+    const {userId} =await auth();
 
     if(!userId){
         redirect("/sign-in");
@@ -25,9 +26,9 @@ const SettingsPage:React.FC<SettingPageProps> = async({params}) => {
          }
     })
 
-     if(!store){
-         redirect('/');
-     }
+    if(!store){
+        redirect('/');
+    }
     return(
         <div className="flex-col">
             <div className="flex-1 space-y-4 p-8 pt-6">

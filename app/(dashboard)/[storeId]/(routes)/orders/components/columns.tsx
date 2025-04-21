@@ -40,6 +40,10 @@ export const columns: ColumnDef<OrderColumn>[] = [
     accessorKey: "createdAt",
     header: "Date",
   },
+    {
+      id:"actions",
+      cell: ({row}) => <CellAction data={row.original}/>
+    }
   
 
 ]

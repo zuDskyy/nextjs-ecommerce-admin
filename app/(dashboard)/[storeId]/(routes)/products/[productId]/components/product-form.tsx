@@ -77,7 +77,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
       price: 0,
       categoryId: '',
       sizeId: '',
-      colorId:'',
+      colorId: '',
       isFeatured: false,
       isArchived: false,
 
@@ -158,9 +158,18 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                 <FormLabel>Image</FormLabel>
                 <FormControl>
                   <ImageUpload
+                    multiple
                     value={field.value.map((image) => image.url)}
                     disabled={loading}
-                    onChange={(url) => field.onChange([...field.value, { url }])}
+                    onChange={(urls) => {
+                      // If urls is array, add them all, else add single
+                      const newUrls = Array.isArray(urls)
+                        ? urls.map((url) => ({ url }))
+                        : [{ url: urls }];
+                  
+                      // Merge with existing images
+                      field.onChange([...field.value, ...newUrls]);
+                    }}
                     onRemove={(url) => field.onChange([...field.value.filter((current) => current.url !== url)])}
                   />
                 </FormControl>
@@ -256,15 +265,15 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                     </FormControl>
                     <SelectContent>
                       {sizes?.map((o) => (
-                        
+
                         <SelectItem
                           key={o.id}
                           value={o.id}
                         >
                           {o.name}
                         </SelectItem>
-                        
-                       ))}
+
+                      ))}
                     </SelectContent>
                   </Select>
 
@@ -276,7 +285,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 
 
 
-              
+
             <FormField
               control={form.control}
               name="colorId"
@@ -299,15 +308,15 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                     </FormControl>
                     <SelectContent>
                       {colors?.map((o) => (
-                        
+
                         <SelectItem
                           key={o.id}
                           value={o.id}
                         >
                           {o.name}
                         </SelectItem>
-                        
-                       ))}
+
+                      ))}
                     </SelectContent>
                   </Select>
 
@@ -317,20 +326,20 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 
 
 
-         <FormField
+            <FormField
               control={form.control}
               name="isFeatured"
               render={({ field }) => (
                 <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-                 <FormControl>
-                  <Checkbox  
-                  checked={field.value}
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
 
-                  onCheckedChange={field.onChange}
-                  />
-                  
-                 </FormControl>
-                 <div className="space-y-1 loading-none">
+                      onCheckedChange={field.onChange}
+                    />
+
+                  </FormControl>
+                  <div className="space-y-1 loading-none">
                     <FormLabel>
                       Featured
                     </FormLabel>
@@ -342,22 +351,22 @@ export const ProductForm: React.FC<ProductFormProps> = ({
               )} />
 
 
-<FormField
+            <FormField
               control={form.control}
               name="isArchived"
               render={({ field }) => (
                 <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-                 <FormControl>
-                  <Checkbox  
-                  checked={field.value}
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
 
-                  onCheckedChange={field.onChange}
-                  />
-               
-                 </FormControl>  
+                      onCheckedChange={field.onChange}
+                    />
+
+                  </FormControl>
                   <div className="space-y-1 loading-none">
                     <FormLabel>
-                     Archived
+                      Archived
                     </FormLabel>
                     <FormDescription>
                       This product will not  appear anywhere in the store.

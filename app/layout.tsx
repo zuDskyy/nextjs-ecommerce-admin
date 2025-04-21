@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import {ClerkProvider} from '@clerk/nextjs';
+import { ClerkProvider } from '@clerk/nextjs';
 import { ModalProvider } from '@/providers/modal-provider';
 import './globals.css'
 import { ToasterProvider } from '@/providers/toast-provider';
@@ -20,18 +20,16 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <ClerkProvider>
-
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem> 
-        <ToasterProvider/>
-        <ModalProvider/>
-       
-        {children}
-        </ThemeProvider>
-        </body>
+        <ClerkProvider >
+          <ThemeProvider attribute="class" >
+            <ModalProvider />
+            {children}
+            <ToasterProvider />
+          </ThemeProvider>
+        </ClerkProvider>
+      </body>
     </html>
-    </ClerkProvider>
   )
 }

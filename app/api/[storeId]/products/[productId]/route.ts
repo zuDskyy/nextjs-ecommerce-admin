@@ -1,13 +1,11 @@
 import prismadb from "@/lib/prismadb";
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
 
 
-export async function GET(
-    req: Request,
-    { params }: { params: { productId: string } }
-) {
+export async function GET(req: Request, props: { params: Promise<{ productId: string }> }) {
+    const params = await props.params;
     try {
 
 
@@ -40,10 +38,11 @@ export async function GET(
 
 export async function PATCH(
     req: Request,
-    { params }: { params: { storeId: string, productId: string } }
+    props: { params: Promise<{ storeId: string, productId: string }> }
 ) {
+    const params = await props.params;
     try {
-        const { userId } = auth();
+        const { userId } = await auth();
         const body = await req.json();
         const {
             name,
@@ -136,10 +135,11 @@ export async function PATCH(
 
 export async function DELETE(
     req: Request,
-    { params }: { params: { storeId: string, productId: string } }
+    props: { params: Promise<{ storeId: string, productId: string }> }
 ) {
+    const params = await props.params;
     try {
-        const { userId } = auth();
+        const { userId } =await auth();
 
 
         if (!userId) {
