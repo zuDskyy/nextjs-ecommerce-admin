@@ -60,9 +60,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
                 ))}
             </div>
             <CldUploadWidget options={{
-                cropping: true,
-                croppingAspectRatio: 938 / 400,
-                showSkipCropButton: false,
+                multiple
             }} onSuccess={onUpload} uploadPreset="j34231fgcv">
                 {({ open }) => {
                     const onClick = () => {
